@@ -1,13 +1,19 @@
-import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
-import config from './firebaseConfig.json'
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
-const firebaseConfig = config.firebaseConfig;
+const firebaseConfig = {
+  apiKey: "API_KEY",
+  authDomain: "PROJECT_ID.firebaseapp.com",
+  projectId: "PROJECT_ID",
+  storageBucket: "PROJECT_ID.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID",
+};
 
-// inicializa o firebase
-const app = initializeApp(firebaseConfig)
+// Inicializa o Firebase
+const app = initializeApp(firebaseConfig);
 
-// inicializar firestore e auth
-export const db = getFirestore(app)
-export const auth = getAuth(app)
+// Exporta Firestore e Auth
+export const db = getFirestore(app);
+export const auth = getAuth(app);
