@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { db } from "../../firebaseConfig";
-import { collection, addDoc, onSnapshot } from "firebase/firestore"; // Usando onSnapshot para sincronizar em tempo real
+import { collection, addDoc, onSnapshot } from "firebase/firestore";
 
-// Registrando componentes do Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
@@ -13,7 +12,6 @@ const Dashboard = () => {
   const [incomes, setIncomes] = useState<number[]>([]);
   const [expensesList, setExpensesList] = useState<number[]>([]);
 
-  // Sincroniza dados de entradas e saídas em tempo real
   useEffect(() => {
     const unsubscribeIncomes = onSnapshot(collection(db, "incomes"), (snapshot) => {
       const incomesData = snapshot.docs.map((doc) => doc.data().amount);
@@ -25,7 +23,6 @@ const Dashboard = () => {
       setExpensesList(expensesData);
     });
 
-    // Limpa os listeners do Firebase quando o componente for desmontado
     return () => {
       unsubscribeIncomes();
       unsubscribeExpenses();
@@ -33,30 +30,29 @@ const Dashboard = () => {
   }, []);
 
   const addIncome = async () => {
-    // Adiciona o valor de renda ao Firestore e atualiza o estado local instantaneamente
     try {
       await addDoc(collection(db, "incomes"), { amount: income });
-      setIncomes([...incomes, income]); // Atualiza o estado local imediatamente
-      setIncome(0); // Reseta o campo de entrada
+      setIncomes([...incomes, income]);
+      setIncome(0);
     } catch (error) {
       console.error("Erro ao adicionar renda: ", error);
     }
   };
 
   const addExpense = async () => {
-    // Adiciona o valor de despesa ao Firestore e atualiza o estado local instantaneamente
+
     try {
       await addDoc(collection(db, "expenses"), { amount: expenses });
-      setExpensesList([...expensesList, expenses]); // Atualiza o estado local imediatamente
-      setExpenses(0); // Reseta o campo de entrada
+      setExpensesList([...expensesList, expenses]);
+      setExpenses(0);
     } catch (error) {
       console.error("Erro ao adicionar despesa: ", error);
     }
   };
 
-  const totalIncomes = incomes.reduce((acc, curr) => acc + curr, 0); // Total de entradas
-  const totalExpenses = expensesList.reduce((acc, curr) => acc + curr, 0); // Total de saídas
-  const saldoAtual = totalIncomes - totalExpenses; // Saldo
+  const totalIncomes = incomes.reduce((acc, curr) => acc + curr, 0);
+  const totalExpenses = expensesList.reduce((acc, curr) => acc + curr, 0);
+  const saldoAtual = totalIncomes - totalExpenses; 
 
   const data = {
     labels: ["Entradas", "Saídas"],
@@ -124,7 +120,6 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Totalizador */}
       <div style={{ marginTop: "20px", fontSize: "18px" }}>
         <p><strong>Total de Entradas:</strong> R$ {totalIncomes.toFixed(2)}</p>
         <p><strong>Total de Saídas:</strong> R$ {totalExpenses.toFixed(2)}</p>

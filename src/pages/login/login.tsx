@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Hook para navegação
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Aqui você pode adicionar lógica de autenticação
+
     console.log("Usuário:", username);
     console.log("Senha:", password);
 
-    // Redireciona para o Dashboard após o login
+
     navigate("/dashboard");
   };
 
